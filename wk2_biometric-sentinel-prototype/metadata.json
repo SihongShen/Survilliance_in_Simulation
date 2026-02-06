@@ -1,0 +1,8 @@
+
+{
+  "name": "Biometric Sentinel Prototype",
+  "description": "A sophisticated biometric capture suite combining eye-tracking via WebGazer.js with keyboard dynamics (speed, rhythm, and frequency) and AI-driven behavior analysis.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
