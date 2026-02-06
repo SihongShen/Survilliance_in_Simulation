@@ -1,7 +1,3 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
-
 # Biometric Sentinel - Data Collection Prototype
 
 A real-time monitoring system for capturing human-computer interaction metrics, including keyboard dynamics and eye tracking data. This prototype collects biometric data and displays it in an interactive dashboard.
@@ -10,9 +6,9 @@ A real-time monitoring system for capturing human-computer interaction metrics, 
 
 - **Keyboard Dynamics Tracking**: Captures typing speed (KPM), keystroke frequency, and inter-key latencies
 - **Eye Gaze Tracking**: Records eye movement coordinates with WebGazer.js
-- **Real-time Dashboard**: Visualizes collected data with interactive charts
-  - Typing Rhythm Dynamics (line chart)
-  - Key Distribution (bar chart)
+- **Real-time Dashboard**: Visualizes collected data
+  - Typing Rhythm Dynamics
+  - Key Distribution
   - Gaze Heatmap (spatial visualization)
   - Live metrics (KPM, Total Strikes, Average Latency)
 
@@ -75,7 +71,7 @@ VITE_APP_DESCRIPTION=Real-time Human-Computer Interaction Monitoring System
 1. User clicks "START MONITORING" button
 2. App requests camera and keyboard permissions
 3. WebGazer begins eye tracking, keyboard listener activates
-4. Dashboard displays live metrics and charts
+4. Dashboard displays live metrics
 
 ## Data Collection
 
@@ -95,7 +91,6 @@ VITE_APP_DESCRIPTION=Real-time Human-Computer Interaction Monitoring System
 - **React 19**: UI framework
 - **TypeScript**: Type safety
 - **Vite**: Build tool
-- **Recharts**: Data visualization
 - **WebGazer.js**: Eye tracking (via script tag in HTML)
 - **Tailwind CSS**: Styling
 
