@@ -1,6 +1,6 @@
 # Biometric Sentinel - Data Collection Prototype
 
-A real-time monitoring system for capturing human-computer interaction metrics, including keyboard dynamics and eye tracking data. This prototype collects biometric data and displays it in an interactive dashboard.
+A real-time monitoring system for capturing human-computer interaction metrics, including keyboard dynamics and eye tracking data. This prototype collects biometric data and displays it in an interactive dashboard. **Collab wiz Gemini**
 
 ## Features
 
