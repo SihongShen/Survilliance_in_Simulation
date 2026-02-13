@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Surveillance Lab</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="watcher-component" class="panel">
+            <h2>Surveillance Dashboard</h2>
+            <div id="status-panel">
+                <canvas id="fp-canvas" width="200" height="40" style="display:none;"></canvas>
+                <p>STATUS: <span class="scanning" style="color: #0f0;">ACTIVE_MONITORING</span></p>
+                <p>FINGERPRINT_ID: <span id="fp-id">Scanning...</span></p>
+                <p>LAST_EVENT: <span id="last-event">None</span></p>
+                <p>KEYSTROKE_BUFFER: <span id="key-buffer" style="word-break: break-all;"></span></p>
+            </div>
+            <div id="tracking-area">
+                </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
