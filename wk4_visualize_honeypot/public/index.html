@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Honeypot Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { margin: 0; background: #0a0a0a; color: #00ff41; font-family: 'Courier New', Courier, monospace; overflow: hidden; }
+        #map { height: 100vh; width: 100vw; }
+        .overlay { position: absolute; top: 20px; left: 20px; z-index: 1000; background: rgba(0,0,0,0.8); padding: 15px; border: 1px solid #00ff41; pointer-events: none; }
+        h1 { margin: 0; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+    <div class="overlay">
+        <h1>Honeypot Map</h1>
+        <p>Status: Listening for global scan signals...</p>
+        <div id="stats">Recorded: 0 requests</div>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const activeMarkers = [];
+        // Initialize the map
+        const map = L.map('map', { 
+            zoomControl: false, 
+            dragging: false,       
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            boxZoom: false,        
+            touchZoom: false,     
+            keyboard: false        
+        }).setView([20, 0], 2.2);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+
+        const markers = [];
+
+        async function fetchAttacks() {
+            try {
+                const response = await fetch('/api/logs');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const data = await response.json();
+                
+                // Update UI number
+                const statsEl = document.getElementById('stats');
+                if (statsEl) statsEl.innerText = `Recorded: ${data.length} requests`;
+
+                // 1. Check if map object exists
+                if (typeof map === 'undefined' || !map) {
+                    console.error("Leaflet Map object not initialized!");
+                    return;
+                }
+
+                // 2. Clear old markers
+                activeMarkers.forEach(m => map.removeLayer(m));
+                activeMarkers.length = 0;
+
+                // 3. Loop through data and add markers with type checking
+                data.forEach((attack, index) => {
+                    const lat = parseFloat(attack.lat);
+                    const lon = parseFloat(attack.lon);
+
+                    // Check that lat and lon are valid numbers before adding marker
+                    if (!isNaN(lat) && !isNaN(lon)) {
+                        try {
+                            const marker = L.circleMarker([lat, lon], {
+                                color: '#ff3131',
+                                radius: 7,
+                                fillOpacity: 0.7,
+                                weight: 1
+                            }).addTo(map);
+
+                            marker.bindTooltip(`
+                                <div style="background:#000; color:#0f0; border:1px solid #0f0; padding:5px; font-family:monospace;">
+                                    [INTRUSION DETECTED]<br>
+                                    IP: ${attack.ip}<br>
+                                    LOC: ${attack.city}, ${attack.country}
+                                </div>
+                            `, { sticky: true, direction: 'top', opacity: 0.9 });
+
+                            activeMarkers.push(marker);
+                        } catch (markerErr) {
+                            console.error(`Failed to add marker at index ${index}:`, markerErr);
+                        }
+                    } else {
+                        console.warn(`Invalid latitude or longitude data [Index ${index}]:`, attack);
+                    }
+                });
+
+                console.log(`Successfully rendered ${activeMarkers.length} red dots on the map.`);
+
+            } catch (err) {
+                console.error("fetchAttacks broke:", err);
+            }
+        }
+
+
+        // Initial fetch and set interval for updates
+        fetchAttacks();
+        setInterval(fetchAttacks, 5000);
+    </script>
+</body>
+</html>
